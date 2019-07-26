@@ -7,7 +7,21 @@
         <span class="subheading">Recently Added Jobs</span>
         <h2 class="mb-4"><span>Recent</span> Jobs</h2>
       </div>
+
     </div>
+    <!-- session message -->
+    @if (session()->has('success'))
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ session('success') }}
+    </div>
+    @endif
+    @if (session()->has('error'))
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ session('error') }}
+    </div>
+    @endif
     <div class="row">
     @if (isset($jobs))
       @foreach ($jobs as $job)
@@ -29,7 +43,7 @@
             </div>
 
             <div class="ml-auto d-flex">
-              <a href="#" class="btn btn-primary py-2 mr-1">Apply Job</a>
+              <a href="{{ route('apllicant.quick.apply', $job->id) }}" class="btn btn-primary py-2 mr-1">Apply Job</a>
 
             </div>
           </div>

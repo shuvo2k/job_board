@@ -2,7 +2,22 @@
 
    @section('content')
    <div class="container">
+     @if (session()->has('success'))
+     <div class="alert alert-success alert-dismissible">
+         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+         {{ session('success') }}
+     </div>
+     @endif
+     <!-- session message -->
+     @if (session()->has('error'))
+     <div class="alert alert-danger alert-dismissible">
+         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+         {{ session('error') }}
+     </div>
+     @endif
        <div class="row justify-content-center">
+         <!-- session message -->
+
            {{-- <div class="col-md-3">
                <div class="card">
                    <div class="card-header">Dashboard</div>

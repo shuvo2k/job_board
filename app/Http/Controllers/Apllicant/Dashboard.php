@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Apllicant;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Apllicant;
+use App\Apllication;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,7 @@ class Dashboard extends Controller
               'last_name' => 'required',
               'skill' => 'required',
               'profile_picture' => 'mimes:png, jpg, jpeg',
-              
+
 
           ]);
 
@@ -37,20 +38,15 @@ class Dashboard extends Controller
            $apllicant->skills = $request['skill'];
 
            if($request->hasFile('profile_picture')) {
-                 // cache the file
                  $file = $request->file('profile_picture');
-                 // generate a new filename. getClientOriginalExtension() for the file extension
                  $filename = 'profile-photo-' . time() . '.' . $file->getClientOriginalExtension();
-                 // save to storage/app/photos as the new $filename
                  $path = $file->storeAs('public/assets/apllicant/images', $filename);
                  $apllicant->image = 'storage/assets/apllicant/images'.'/'.$filename;
              }
 
              if($request->hasFile('resume')) {
                    $file = $request->file('resume');
-                   // generate a new filename. getClientOriginalExtension() for the file extension
                    $filename = 'resume-' . time() . '.' . $file->getClientOriginalExtension();
-                   // save to storage/app/photos as the new $filename
                    $path = $file->storeAs('public/assets/apllicant/resumes', $filename);
                    $apllicant->resume = 'storage/assets/apllicant/resumes'.'/'.$filename;
                }
@@ -58,5 +54,28 @@ class Dashboard extends Controller
         $apllicant->save();
         session()->flash('success', 'Profile Updated Successfully.');
         return redirect()->route('company.home');
+    }
+
+
+
+    public function quickApply($id){
+      if(Auth::guard('apllicant')->check() && Auth::user()->resume){
+        $check = Apllication::where('job_id', $id)->where('applicant_id', Auth::user()->id)->get();
+        if(isset($check)){
+          session()->flash('error', 'You have already Apllied.');
+          return redirect()->route('home');
+        }
+
+        $application = new Apllication();
+        $application->job_id = $id;
+        $application->applicant_id = Auth::user()->id;
+        $application->save();
+        session()->flash('success', 'You have Successfully Apllied.');
+        return redirect()->route('home');
+
+      }else{
+          session()->flash('error', 'Please Upload Resume to Apply.');
+          return redirect()->route('apllicant.home');
+      }
     }
 }

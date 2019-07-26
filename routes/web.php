@@ -36,4 +36,5 @@ Route::post('/job/submit', 'Dashboard@submitJob')->name('job.submit');
 Route::group(['as' => 'apllicant.' ,'prefix' => 'apllicant', 'namespace' => 'Apllicant', 'middleware' => ['auth:apllicant']], function () {
 Route::get('/', 'Dashboard@index')->name('home');
 Route::post('/profile/update', 'Dashboard@profileUpdate')->name('profile.update');
+Route::get('/quick/apply/{id}', 'Dashboard@quickApply')->name('quick.apply');
 });
