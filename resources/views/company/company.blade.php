@@ -112,7 +112,7 @@
                                 <th scope="row"><?php echo $i; ?></th>
                                 <td>{{$job->job_title}}</td>
                                 <td>{{ $job->salary }}</td>
-                                <td></td>
+                                <td><a href="{{ route('company.job.apllicants', $job->id) }}">view apllicants</a></td>
                             </tr>
                             <?php $i++ ?>
                             @endforeach

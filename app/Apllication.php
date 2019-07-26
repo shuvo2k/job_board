@@ -11,8 +11,8 @@ class Apllication extends Model
       return $this->belongsTo('App\Job');
     }
 
-    public function applicants()
+    public function apllicants()
     {
-      return $this->hasMany('App\Applicants');
+      return $this->hasMany('App\Apllicant');
     }
 }

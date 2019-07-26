@@ -30,6 +30,7 @@ Route::post('/register/apllicant', 'Auth\RegisterController@createApllicant')->n
 Route::group(['as' => 'company.' ,'prefix' => 'company', 'namespace' => 'Company', 'middleware' => ['auth:company']], function () {
 Route::get('/', 'Dashboard@index')->name('home');
 Route::post('/job/submit', 'Dashboard@submitJob')->name('job.submit');
+Route::get('/job/{id}/apllicants/', 'Dashboard@viewApllicants')->name('job.apllicants');
 });
 
 

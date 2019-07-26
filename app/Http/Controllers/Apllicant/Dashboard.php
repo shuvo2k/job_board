@@ -60,7 +60,7 @@ class Dashboard extends Controller
 
     public function quickApply($id){
       if(Auth::guard('apllicant')->check() && Auth::user()->resume){
-        $check = Apllication::where('job_id', $id)->where('applicant_id', Auth::user()->id)->get();
+        $check = Apllication::where('job_id', $id)->where('apllicant_id', Auth::user()->id)->first();
         if(isset($check)){
           session()->flash('error', 'You have already Apllied.');
           return redirect()->route('home');
@@ -68,7 +68,7 @@ class Dashboard extends Controller
 
         $application = new Apllication();
         $application->job_id = $id;
-        $application->applicant_id = Auth::user()->id;
+        $application->apllicant_id = Auth::user()->id;
         $application->save();
         session()->flash('success', 'You have Successfully Apllied.');
         return redirect()->route('home');

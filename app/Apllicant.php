@@ -22,9 +22,9 @@ class Apllicant extends Authenticable
     'password', 'remember_token',
   ];
 
-    public function application()
+    public function apllication()
     {
-      return $this->belongsTo('App\Application');
+      return $this->belongsTo('App\Apllication');
     }
 
 }

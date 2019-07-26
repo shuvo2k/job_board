@@ -16,7 +16,7 @@ class CreateApllicationsTable extends Migration
         Schema::create('apllications', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('job_id')->length(10);
-            $table->integer('applicant_id')->legth(10);
+            $table->integer('apllicant_id')->legth(10);
             $table->timestamps();
         });
     }
