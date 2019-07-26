@@ -1,12 +1,14 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Company;
+use App\Apllicant;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -38,6 +40,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:company');
+        $this->middleware('guest:apllicant');
     }
 
     /**
@@ -68,5 +72,72 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+
+//company registration system
+
+    public function showCompanyRegisterForm()
+    {
+        return view('auth.company_register');
+    }
+
+    protected function createCompany(Request $request)
+    {
+
+      $validator = Validator::make($request->all(), [
+              'first_name'  => 'required',
+              'last_name' => 'required',
+              'business_name' => 'required',
+              'email' => 'required|unique:companies',
+              'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+              'password_confirmation' => 'min:6'
+          ]);
+
+         if ($validator->fails())
+          {
+            return redirect()->back()->withErrors($validator)->withInput();
+         }
+
+        $company = Company::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'business_name' => $request['business_name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->route('company.login');
+    }
+
+//apllicant registration system
+    public function showApllicantRegisterForm()
+    {
+        return view('auth.apllicant_register');
+    }
+
+    protected function createApllicant(Request $request)
+    {
+      //dd($request->all());
+      //$this->validator($request->all())->validate();
+      $validator = Validator::make($request->all(), [
+              'first_name'  => 'required',
+              'last_name' => 'required',
+              'email' => 'required|unique:apllicants',
+              'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+              'password_confirmation' => 'min:6'
+          ]);
+
+         if ($validator->fails())
+          {
+            return redirect()->back()->withErrors($validator)->withInput();
+         }
+
+        $apllicant = Apllicant::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->intended('login/apllicant');
     }
 }
